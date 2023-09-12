@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  api:
+    profiles: [ "api" ]
+    container_name: example_service.api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    command: ["uvicorn", "--factory", "src.presentation.api.main:create_app", "--host", "0.0.0.0", "--port", "8000"]
+    volumes:
+      - ./config:/app/config:ro
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH:-./config/prod.toml}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:8000/healthcheck/"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  postgres_migration:
+    profiles: [ "migration" ]
+    container_name: example_service.postgres_migration
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH:-./config/prod.toml}
+    volumes:
+      - ./config:/app/config:ro
+      - ./alembic.ini:/app/alembic.ini:ro
+      - ./src/infrastructure/database/migrations:/app/src/infrastructure/database/migrations:ro
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+
+  postgres:
+    profiles: [ "api", "migration" ]
+    container_name: example_service.postgres
+    image: postgres:15.3-alpine
+    hostname: example_service.postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-$USER}
+      POSTGRES_USER: ${POSTGRES_USER:-$USER}
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    ports:
+      - "5432:5432"
+    volumes:
+      - example_service.postgres.data:/var/lib/postgresql/users:rw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  example_service.postgres.data: {}

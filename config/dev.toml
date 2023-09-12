@@ -1,0 +1,15 @@
+[api]
+host = "127.0.0.1"
+port = 8000
+debug = true
+
+[db]
+host = "localhost"
+port = 5432
+database = "prod_db"
+user = "admin"
+password = "admin"
+echo = true
+
+[logging]
+level = "DEBUG"

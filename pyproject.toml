@@ -1,0 +1,91 @@
+[tool.poetry]
+name = "fastapi-template"
+version = "0.1.0"
+description = ""
+authors = ["IgorSemenov70 <87079215+IgorSemenov70@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.103.1"
+di = "^0.76.0"
+uvicorn = "^0.23.2"
+asyncpg = "^0.28.0"
+orjson = "^3.9.7"
+alembic = "^1.12.0"
+httpx = "^0.25.0"
+adaptix = "^3.0.0a5"
+uuid6 = "^2023.5.2"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.20"}
+
+[tool.poetry.group.test.dependencies]
+testcontainers = {extras = ["postgresql"], version = "^3.7.1"}
+pytest = "^7.4.2"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+pytest-order = "^1.1.0"
+
+[tool.poetry.group.lint.dependencies]
+isort = "^5.12.0"
+ruff = "^0.0.288"
+black = "^23.9.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 99
+select = ["E", "F", "SIM", "ARG", "T20", "Q", "N", "ANN", "RET", "PT", "C4", "C90"]
+ignore = ["ANN101", "ANN002", "ANN003"]
+extend-exclude = [".venv", "alembic", "pyproject.toml"]
+unfixable = ["T20", "E711"]
+
+[tool.black]
+line_length = 99
+skip-string-normalization = true
+force-exclude = "(alembic|.venv)/"
+
+[tool.isort]
+profile = 'black'
+multi_line_output = '3'
+include_trailing_comma = true
+combine_as_imports = true
+extend_skip = ["alembic", ".venv"]
+known_fastapi = ['fastapi']
+known_firstparty = ['src']
+known_third_party = []
+sections = 'FUTURE,STDLIB,THIRDPARTY,FASTAPI,FIRSTPARTY,LOCALFOLDER'
+
+[tool.mypy]
+ignore_missing_imports = true
+no_implicit_optional = false
+warn_unused_ignores = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+omit = [
+    ".*",
+    "*/site-packages/*",
+    "*/__main__.py",
+    "*/main.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "class .*\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

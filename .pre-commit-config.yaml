@@ -34,9 +34,3 @@ repos:
     - id: black
       args: ['--check']
       exclude: '^(projects/tools)'
-
-  - repo:  https://github.com/milin/giticket
-    rev: v1.4
-    hooks:
-    - id:  giticket
-      args: ['--regex=/(\d+)-', '--mode=regex_match', '--format=org/suplbiz#{ticket} {commit_msg}']

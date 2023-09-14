@@ -12,7 +12,7 @@ from .responses import ErrorResult
 logger = logging.getLogger(__name__)
 
 
-def setup_exception_handlers(app: FastAPI) -> None:
+def init_exception_handlers(app: FastAPI) -> None:
     """
     Set up custom exception handlers for a FastAPI application.
     This function registers a custom exception handler for the specified FastAPI

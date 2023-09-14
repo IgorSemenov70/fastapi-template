@@ -13,6 +13,6 @@ class OkStatus(BaseModel):
 
 
 @healthcheck_router.get("/", status_code=status.HTTP_200_OK)
-async def healthcheck_handler() -> OkStatus:
+async def healthcheck_controller() -> OkStatus:
     """Returns a status indicating the health of the application."""
     return OkStatus()

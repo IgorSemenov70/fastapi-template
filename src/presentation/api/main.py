@@ -9,8 +9,7 @@ from fastapi.responses import ORJSONResponse
 
 from src.infrastructure.database.models import mapper_registry
 from src.infrastructure.di import init_di_container, DiScope
-from src.presentation.api.controllers import init_controllers
-from src.presentation.api.controllers.exceptions import setup_exception_handlers
+from src.presentation.api.controllers import init_controllers, init_exception_handlers
 from src.presentation.api.middlewares import init_middlewares
 from src.presentation.api.providers import init_providers
 
@@ -31,7 +30,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 def create_app() -> FastAPI:
     app = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
     init_middlewares(app)
-    setup_exception_handlers(app)
+    init_exception_handlers(app)
     return app
 
 

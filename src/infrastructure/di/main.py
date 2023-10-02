@@ -1,15 +1,15 @@
 from di import Container, bind_by_type
 from di.api.scopes import Scope
 from di.dependent import Dependent
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from src.application.common.interfaces import UnitOfWork
 from src.application.users.interactors import GetUserById
 from src.application.users.interfaces.persistence import UserRepository
 from src.infrastructure.database.main import (
     build_sa_engine,
-    build_sa_session_factory,
     build_sa_session,
+    build_sa_session_factory,
 )
 from src.infrastructure.database.repositories.users import UserRepositoryImpl
 from src.infrastructure.database.uow import SQLAlchemyUoW
@@ -41,6 +41,4 @@ def _setup_database_repositories(di_container: Container, scope: Scope) -> None:
 
 
 def _setup_application_handlers(di_container: Container, scope: Scope) -> None:
-    di_container.bind(
-        bind_by_type(Dependent(GetUserById, scope=scope), GetUserById)
-    )
+    di_container.bind(bind_by_type(Dependent(GetUserById, scope=scope), GetUserById))

@@ -7,5 +7,5 @@ from src.application.users.dto import User
 
 class UserRepository(Protocol):
     @abstractmethod
-    async def get_by_id(self, user_id: UUID) -> User:
+    async def get_by_id(self, user_id: UUID) -> User | None:
         raise NotImplementedError

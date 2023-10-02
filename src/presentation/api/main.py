@@ -4,11 +4,11 @@ from typing import AsyncGenerator
 import uvicorn
 from di import Container
 from di.executors import AsyncExecutor
+
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from src.infrastructure.database.models import mapper_registry
-from src.infrastructure.di import init_di_container, DiScope
+from src.infrastructure.di import DiScope, init_di_container
 from src.presentation.api.controllers import init_controllers, init_exception_handlers
 from src.presentation.api.middlewares import init_middlewares
 from src.presentation.api.providers import init_providers
@@ -22,9 +22,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     async with di_container.enter_scope(scope=DiScope.APP) as di_state:
         init_providers(app, di_container=di_container, di_executor=di_executor, di_state=di_state)
         init_controllers(app)
-        mapper_registry.configure()
         yield
-        mapper_registry.dispose()
 
 
 def create_app() -> FastAPI:

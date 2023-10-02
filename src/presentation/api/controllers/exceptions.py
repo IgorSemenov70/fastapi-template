@@ -1,12 +1,14 @@
 import logging
 
-from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse
 from starlette import status
 from starlette.requests import Request
 
+from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
+
 from src.application.common.exceptions import ApplicationError
 from src.application.users.exceptions import UserNotFoundError
+
 from .responses import ErrorResult
 
 logger = logging.getLogger(__name__)
@@ -36,9 +38,7 @@ async def unknown_exception_handler(_: Request, err: Exception) -> ORJSONRespons
     )
 
 
-async def handle_error(
-    _: Request, err: ApplicationError, status_code: int
-) -> ORJSONResponse:
+async def handle_error(_: Request, err: ApplicationError, status_code: int) -> ORJSONResponse:
     """Custom error handler for handling known application errors."""
     logger.error("Handle error", exc_info=err, extra={"error": err})
     return ORJSONResponse(

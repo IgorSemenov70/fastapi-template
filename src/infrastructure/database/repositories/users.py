@@ -2,8 +2,9 @@ from uuid import UUID
 
 from src.application.users.dto import User
 from src.application.users.interfaces.persistence import UserRepository
-from .base import SQLAlchemyRepository
+
 from ..exception_mapper import exception_mapper
+from .base import SQLAlchemyRepository
 
 
 class UserRepositoryImpl(SQLAlchemyRepository, UserRepository):

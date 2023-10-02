@@ -4,18 +4,19 @@ from typing import Any
 
 class Stub:
     """
-        This class is used to prevent fastapi from digging into
-        real dependencies attributes detecting them as request data
-    
-        So instead of
-        `interactor: Annotated[Interactor, Depends()]`
-        Write
-        `interactor: Annotated[Interactor, Depends(Stub(Interactor))]`
-    
-        And then you can declare how to create it:
-        `app.dependency_overrides[Interactor] = some_real_factory`
-    
+    This class is used to prevent fastapi from digging into
+    real dependencies attributes detecting them as request data
+
+    So instead of
+    `interactor: Annotated[Interactor, Depends()]`
+    Write
+    `interactor: Annotated[Interactor, Depends(Stub(Interactor))]`
+
+    And then you can declare how to create it:
+    `app.dependency_overrides[Interactor] = some_real_factory`
+
     """
+
     def __init__(self, dependency: Callable, **kwargs: Hashable) -> None:
         self._dependency = dependency
         self._kwargs = kwargs

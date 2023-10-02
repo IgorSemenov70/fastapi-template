@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.infrastructure.config_loader import load_config
 from src.infrastructure.database import DBConfig
-from src.infrastructure.database.models.base import mapper_registry
+from src.infrastructure.database.models.base import BaseModel
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,17 +21,10 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = mapper_registry.metadata
+target_metadata = BaseModel.metadata
 
 if not (full_url := config.get_main_option("sqlalchemy.url")):
     full_url = load_config(DBConfig, "db").full_url
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 
 def run_migrations_offline() -> None:

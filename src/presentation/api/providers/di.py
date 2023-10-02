@@ -1,7 +1,8 @@
-from typing import AsyncGenerator, Annotated
+from typing import Annotated, AsyncGenerator
 
-from di import ScopeState, Container
+from di import Container, ScopeState
 from di.api.executor import SupportsAsyncExecutor
+
 from fastapi import Depends
 
 from src.infrastructure.di import DiScope

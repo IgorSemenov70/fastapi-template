@@ -1,9 +1,9 @@
 from uuid import UUID
 
+from ...common.interactor import Interactor
 from ..dto import User
 from ..exceptions import UserNotFoundError
 from ..interfaces.persistence import UserRepository
-from ...common.interactor import Interactor
 
 
 class GetUserById(Interactor[UUID, User]):

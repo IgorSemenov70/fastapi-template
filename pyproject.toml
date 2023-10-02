@@ -7,8 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = "^0.103.1"
-di = "^0.76.0"
+fastapi = "^0.103.2"
 uvicorn = "^0.23.2"
 asyncpg = "^0.28.0"
 orjson = "^3.9.7"
@@ -16,7 +15,8 @@ alembic = "^1.12.0"
 httpx = "^0.25.0"
 adaptix = "^3.0.0a5"
 uuid6 = "^2023.5.2"
-sqlalchemy = {extras = ["asyncio"], version = "^2.0.20"}
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.21"}
+di = "^0.77.0"
 
 [tool.poetry.group.test.dependencies]
 testcontainers = {extras = ["postgresql"], version = "^3.7.1"}
@@ -54,7 +54,7 @@ combine_as_imports = true
 extend_skip = ["alembic", ".venv"]
 known_fastapi = ['fastapi']
 known_firstparty = ['src']
-known_third_party = []
+known_third_party = ["adaptix", "alembic", "di", "httpx", "orjson", "pydantic", "pytest", "pytest_asyncio", "sqlalchemy", "starlette", "testcontainers", "uuid6", "uvicorn"]
 sections = 'FUTURE,STDLIB,THIRDPARTY,FASTAPI,FIRSTPARTY,LOCALFOLDER'
 
 [tool.mypy]
@@ -72,6 +72,8 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 
 [tool.coverage.run]
+source = ["src", "tests"]
+dynamic_context = "test_function"
 omit = [
     ".*",
     "*/site-packages/*",

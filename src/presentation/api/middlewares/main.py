@@ -1,6 +1,7 @@
-from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+
+from fastapi import FastAPI
 
 
 def init_middlewares(app: FastAPI) -> None:

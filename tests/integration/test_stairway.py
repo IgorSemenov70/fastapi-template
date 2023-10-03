@@ -22,11 +22,6 @@ def get_revisions(alembic_config: AlembicConfig) -> list[Script]:
     return revisions
 
 
-@pytest.fixture(scope="module", autouse=True)
-def drop_db(alembic_config: AlembicConfig) -> None:
-    downgrade(alembic_config, "base")
-
-
 @pytest.mark.order("first")
 def test_migrations_stairway(alembic_config: AlembicConfig) -> None:
     for revision in get_revisions(alembic_config):

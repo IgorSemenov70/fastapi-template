@@ -3,7 +3,7 @@ import os
 from typing import Generator
 
 import pytest
-from alembic.command import upgrade
+from alembic.command import downgrade, upgrade
 from alembic.config import Config as AlembicConfig
 from testcontainers.postgres import PostgresContainer
 
@@ -34,3 +34,8 @@ def alembic_config(postgres_url: str) -> AlembicConfig:
 @pytest.fixture(scope="session", autouse=True)
 def upgrade_schema_db(alembic_config: AlembicConfig) -> None:
     upgrade(alembic_config, "head")
+
+
+@pytest.fixture(scope="module", autouse=True)
+def drop_db(alembic_config: AlembicConfig) -> None:
+    downgrade(alembic_config, "base")

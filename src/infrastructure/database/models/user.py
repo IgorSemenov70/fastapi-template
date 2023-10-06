@@ -12,7 +12,7 @@ class User(TimedBaseModel):
     __mapper_args__ = {"eager_defaults": True}
 
     id: Mapped[UUID] = mapped_column(
-        primary_key=True, default=uuid7, server_default=sa.func.uuid_generate_v7(), index=True
+        primary_key=True, default=uuid7, server_default=sa.func.uuid_generate_v7()
     )
     email: Mapped[str] = mapped_column(unique=True)
     first_name: Mapped[str]
